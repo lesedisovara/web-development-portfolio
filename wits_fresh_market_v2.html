@@ -1,0 +1,405 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --g50:#EAF3DE;--g100:#C0DD97;--g400:#639922;--g600:#3B6D11;--g800:#27500A;
+  --t50:#E1F5EE;--t100:#9FE1CB;--t400:#1D9E75;--t600:#0F6E56;
+  --a50:#FAEEDA;--a100:#FAC775;--a400:#EF9F27;--a600:#BA7517;--a800:#633806;
+  --r50:#FCEBEB;--r400:#E24B4A;
+}
+.app { display:flex; flex-direction:column; }
+.nav { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:0.5px solid var(--color-border-tertiary); }
+.nav-logo { display:flex; align-items:center; gap:8px; }
+.logo-box { width:30px;height:30px;background:var(--g50);border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center; }
+.logo-box i { color:var(--g600);font-size:16px; }
+.brand { font-size:15px;font-weight:500;color:var(--color-text-primary); }
+.brand span { color:var(--g600); }
+.nav-tabs { display:flex;gap:4px; }
+.ntab { padding:6px 14px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;border:0.5px solid transparent;color:var(--color-text-secondary);transition:all 0.15s; }
+.ntab.active { background:var(--g50);color:var(--g600);border-color:var(--g100);font-weight:500; }
+.ntab:hover:not(.active) { background:var(--color-background-secondary); }
+.cart-btn { position:relative;padding:6px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);cursor:pointer;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--color-text-primary); }
+.cbadge { position:absolute;top:-6px;right:-6px;background:var(--g600);color:#fff;font-size:10px;font-weight:500;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center; }
+.view { display:none;padding:20px; }
+.view.active { display:block; }
+
+.hero { background:var(--g50);border-radius:var(--border-radius-lg);padding:16px 20px;margin-bottom:16px;border:0.5px solid var(--g100);display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.hero-text h2 { font-size:18px;font-weight:500;color:var(--g800);margin-bottom:3px; }
+.hero-text p { font-size:12px;color:var(--g600); }
+.eta-hero { background:var(--color-background-primary);border:0.5px solid var(--g100);border-radius:var(--border-radius-lg);padding:10px 16px;text-align:center;min-width:110px; }
+.eta-hero .mins { font-size:26px;font-weight:500;color:var(--g600);line-height:1; }
+.eta-hero .eta-label { font-size:11px;color:var(--g400);margin-top:2px; }
+
+.fresh-banner { display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--t50);border:0.5px solid var(--t100);border-radius:var(--border-radius-md);margin-bottom:14px; }
+.fresh-banner i { color:var(--t600);font-size:16px; }
+.fresh-banner span { font-size:12px;color:var(--t600);font-weight:500; }
+.fresh-banner .fresh-time { margin-left:auto;font-size:11px;color:var(--t400); }
+
+.filter-bar { display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap; }
+.fchip { padding:5px 14px;border-radius:20px;font-size:12px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);cursor:pointer;color:var(--color-text-secondary);transition:all 0.15s; }
+.fchip.active { background:var(--g50);color:var(--g600);border-color:var(--g100);font-weight:500; }
+
+.slabel { font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:10px;letter-spacing:0.04em; }
+.pgrid { display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px; }
+.pcard { background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px;cursor:pointer;transition:border-color 0.15s; }
+.pcard:hover { border-color:var(--color-border-secondary); }
+.pcard.incart { border-color:var(--t100);background:var(--t50); }
+.pemoji { font-size:26px;margin-bottom:7px;display:block; }
+.pname { font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:1px; }
+.pprice { font-size:13px;color:var(--g600);font-weight:500; }
+.punit { font-size:11px;color:var(--color-text-secondary); }
+.fresh-tag { display:inline-flex;align-items:center;gap:3px;margin-top:5px;font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500; }
+.fresh-tag.fresh { background:var(--g50);color:var(--g600); }
+.fresh-tag.today { background:var(--t50);color:var(--t600); }
+.fresh-tag.limited { background:var(--a50);color:var(--a800); }
+.padd { margin-top:8px;width:100%;padding:5px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:12px;cursor:pointer;color:var(--color-text-primary);font-family:var(--font-sans);transition:all 0.15s; }
+.padd:hover { background:var(--g50);border-color:var(--g100);color:var(--g600); }
+.padd.added { background:var(--t50);border-color:var(--t100);color:var(--t600); }
+.qctrl { display:flex;align-items:center;gap:4px;margin-top:8px; }
+.qbtn { width:24px;height:24px;border-radius:50%;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-text-primary); }
+.qbtn:hover { background:var(--g50); }
+.qnum { font-size:13px;font-weight:500;flex:1;text-align:center;color:var(--color-text-primary); }
+
+.cart-empty { text-align:center;padding:48px 20px;color:var(--color-text-secondary); }
+.cart-empty i { font-size:36px;margin-bottom:12px;display:block;opacity:0.35; }
+.citem { display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--color-border-tertiary); }
+.citem-emoji { font-size:22px; }
+.citem-info { flex:1; }
+.citem-name { font-size:13px;font-weight:500;color:var(--color-text-primary); }
+.citem-sub { font-size:11px;color:var(--color-text-secondary); }
+.citem-total { font-size:13px;font-weight:500;color:var(--g600); }
+
+.order-summary { background:var(--g50);border-radius:var(--border-radius-lg);padding:14px 16px;margin-top:14px;border:0.5px solid var(--g100); }
+.srow { display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--color-text-secondary); }
+.srow.total { font-size:15px;font-weight:500;color:var(--color-text-primary);margin-top:8px;border-top:0.5px solid var(--g100);padding-top:8px;margin-bottom:0; }
+
+.eta-block { display:flex;align-items:center;gap:12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;margin-top:10px;border:0.5px solid var(--color-border-tertiary); }
+.eta-block i { color:var(--g600);font-size:18px; }
+.eta-block .eta-mins { font-size:18px;font-weight:500;color:var(--g600); }
+.eta-block .eta-txt { font-size:12px;color:var(--color-text-secondary); }
+
+.loc-wrap { margin-top:10px; }
+.loc-wrap label { font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:5px; }
+.loc-wrap select { width:100%;padding:8px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);font-size:13px;font-family:var(--font-sans);color:var(--color-text-primary); }
+.order-btn { width:100%;margin-top:12px;padding:11px;background:var(--g600);color:#fff;border:none;border-radius:var(--border-radius-lg);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:opacity 0.15s; }
+.order-btn:hover { opacity:0.88; }
+
+.hawker-stats { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px; }
+.hstat { background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center; }
+.hstat-num { font-size:22px;font-weight:500;color:var(--color-text-primary); }
+.hstat-label { font-size:11px;color:var(--color-text-secondary);margin-top:2px; }
+.ocard { background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px; }
+.ocard-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:8px; }
+.oid { font-size:12px;color:var(--color-text-secondary); }
+.obadge { font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500; }
+.b-new { background:var(--a50);color:var(--a800); }
+.b-otw { background:var(--t50);color:var(--t600); }
+.b-done { background:var(--g50);color:var(--g800); }
+.oloc { font-size:13px;color:var(--color-text-primary);display:flex;align-items:center;gap:5px;margin-bottom:3px; }
+.oitems { font-size:12px;color:var(--color-text-secondary);margin-bottom:8px; }
+.oeta-row { display:flex;align-items:center;gap:6px;margin-bottom:8px; }
+.oeta-pill { display:flex;align-items:center;gap:4px;font-size:12px;padding:3px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary); }
+.oeta-pill.ticking { border-color:var(--a100);background:var(--a50);color:var(--a800); }
+.oeta-pill.done { border-color:var(--g100);background:var(--g50);color:var(--g800); }
+.obottom { display:flex;justify-content:space-between;align-items:center; }
+.oamt { font-size:14px;font-weight:500;color:var(--g600); }
+.obtn { padding:6px 14px;border:none;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;font-family:var(--font-sans);color:#fff; }
+.obtn-accept { background:var(--g600); }
+.obtn-deliver { background:var(--t600); }
+
+.hstatus { display:flex;align-items:center;gap:8px;margin-bottom:16px; }
+.sdot { width:8px;height:8px;border-radius:50%;background:var(--g400); }
+.sdot.off { background:#888780; }
+
+.success-wrap { text-align:center;padding:36px 20px; }
+.sicon { width:60px;height:60px;background:var(--g50);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px; }
+.sicon i { font-size:28px;color:var(--g600); }
+.track-card { background:var(--g50);border-radius:var(--border-radius-lg);padding:14px 18px;margin:14px auto;max-width:300px;border:0.5px solid var(--g100);text-align:left; }
+.trow { display:flex;align-items:center;gap:10px;margin-bottom:8px; }
+.trow:last-child { margin-bottom:0; }
+.trow i { font-size:14px;color:var(--g600); }
+.trow span { font-size:13px;color:var(--color-text-primary); }
+.trow .tlabel { font-size:11px;color:var(--color-text-secondary); }
+.back-btn { margin-top:14px;padding:8px 20px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);font-size:13px;cursor:pointer;font-family:var(--font-sans);color:var(--color-text-primary); }
+</style>
+
+<h2 class="sr-only">Wits Fresh Market — order fresh fruits and vegetables for trolley delivery across Wits campus</h2>
+
+<div class="app">
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="logo-box"><i class="ti ti-leaf" aria-hidden="true"></i></div>
+      <span class="brand">Wits <span>Fresh</span></span>
+    </div>
+    <div class="nav-tabs">
+      <div class="ntab active" onclick="switchView('shop')"><i class="ti ti-shopping-bag" aria-hidden="true"></i> Shop</div>
+      <div class="ntab" onclick="switchView('hawker')"><i class="ti ti-bike" aria-hidden="true"></i> Hawker</div>
+    </div>
+    <button class="cart-btn" onclick="switchView('cart')" aria-label="View cart">
+      <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+      <span id="cart-nav-txt">0 items</span>
+      <span class="cbadge" id="cbadge" style="display:none">0</span>
+    </button>
+  </nav>
+
+  <div class="view active" id="view-shop">
+    <div class="hero">
+      <div class="hero-text">
+        <h2>Fresh from the hawker</h2>
+        <p>Picked this morning · Delivered by trolley</p>
+      </div>
+      <div class="eta-hero">
+        <div class="mins" id="hero-eta">8</div>
+        <div class="eta-label"><i class="ti ti-clock" aria-hidden="true" style="font-size:11px"></i> min delivery</div>
+      </div>
+    </div>
+
+    <div class="fresh-banner">
+      <i class="ti ti-certificate" aria-hidden="true"></i>
+      <span>All stock sourced from Joburg fresh produce market — same morning</span>
+      <span class="fresh-time">Restocked 06:00 today</span>
+    </div>
+
+    <div class="filter-bar">
+      <div class="fchip active" onclick="filterCat('all',this)">All</div>
+      <div class="fchip" onclick="filterCat('fruit',this)">Fruits</div>
+      <div class="fchip" onclick="filterCat('veg',this)">Veg</div>
+    </div>
+
+    <p class="slabel">AVAILABLE NOW</p>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+
+  <div class="view" id="view-cart">
+    <p class="slabel">YOUR BASKET</p>
+    <div id="cart-items"></div>
+    <div id="cart-checkout" style="display:none">
+      <div class="order-summary" id="order-summary"></div>
+      <div class="eta-block">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        <div>
+          <div class="eta-mins" id="cart-eta-mins">~8 min</div>
+          <div class="eta-txt">estimated delivery to your spot</div>
+        </div>
+      </div>
+      <div class="loc-wrap">
+        <label>Deliver to</label>
+        <select id="dloc" onchange="updateEta()">
+          <option value="5">Library Lawns</option>
+          <option value="7">Matrix Cafe</option>
+          <option value="10">Wartenweiler Library</option>
+          <option value="8">Senate House Steps</option>
+          <option value="12">East Campus Gate</option>
+          <option value="6">Origins Cafe</option>
+          <option value="15">Sports Fields Entrance</option>
+        </select>
+      </div>
+      <button class="order-btn" onclick="placeOrder()"><i class="ti ti-check" aria-hidden="true"></i> Place order</button>
+    </div>
+  </div>
+
+  <div class="view" id="view-hawker">
+    <div class="hstatus">
+      <div class="sdot" id="sdot"></div>
+      <span style="font-size:13px;color:var(--color-text-secondary)" id="slabel">Online — accepting orders</span>
+      <button onclick="toggleOnline()" style="margin-left:auto;font-size:12px;padding:4px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);cursor:pointer;font-family:var(--font-sans);color:var(--color-text-primary);">Toggle status</button>
+    </div>
+    <div class="hawker-stats">
+      <div class="hstat"><div class="hstat-num" id="hs-new">2</div><div class="hstat-label">New orders</div></div>
+      <div class="hstat"><div class="hstat-num" id="hs-otw">1</div><div class="hstat-label">On the way</div></div>
+      <div class="hstat"><div class="hstat-num" id="hs-done">4</div><div class="hstat-label">Delivered today</div></div>
+    </div>
+    <p class="slabel">ORDERS</p>
+    <div id="horders"></div>
+  </div>
+
+  <div class="view" id="view-success">
+    <div class="success-wrap">
+      <div class="sicon"><i class="ti ti-check" aria-hidden="true"></i></div>
+      <h3 style="font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px;">Order confirmed!</h3>
+      <p style="font-size:13px;color:var(--color-text-secondary)">Your hawker is packing your fresh produce now.</p>
+      <div class="track-card">
+        <div class="trow"><i class="ti ti-package" aria-hidden="true"></i><div><div class="trow" style="margin:0">Hawker is packing</div><div class="tlabel">~2 min</div></div></div>
+        <div class="trow"><i class="ti ti-bike" aria-hidden="true"></i><div><div class="trow" style="margin:0">Trolley en route</div><div class="tlabel" id="s-eta-txt">~6 min</div></div></div>
+        <div class="trow"><i class="ti ti-map-pin" aria-hidden="true"></i><div><div class="trow" style="margin:0" id="s-loc">Library Lawns</div><div class="tlabel">your delivery spot</div></div></div>
+      </div>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin-top:4px;">Total delivery time: <strong id="s-total-eta" style="color:var(--g600)">~8 min</strong></p>
+      <button class="back-btn" onclick="switchView('shop')">← Keep shopping</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const products = [
+  {id:1,name:"Banana",emoji:"🍌",price:3,unit:"each",cat:"fruit",tag:"fresh"},
+  {id:2,name:"Apple",emoji:"🍎",price:4,unit:"each",cat:"fruit",tag:"today"},
+  {id:3,name:"Orange",emoji:"🍊",price:4,unit:"each",cat:"fruit",tag:"fresh"},
+  {id:4,name:"Mango",emoji:"🥭",price:6,unit:"each",cat:"fruit",tag:"limited"},
+  {id:5,name:"Spinach",emoji:"🥬",price:8,unit:"bunch",cat:"veg",tag:"fresh"},
+  {id:6,name:"Tomato",emoji:"🍅",price:3,unit:"each",cat:"veg",tag:"today"},
+  {id:7,name:"Carrot",emoji:"🥕",price:3,unit:"each",cat:"veg",tag:"fresh"},
+  {id:8,name:"Potato",emoji:"🥔",price:4,unit:"each",cat:"veg",tag:"fresh"},
+  {id:9,name:"Avocado",emoji:"🥑",price:9,unit:"each",cat:"fruit",tag:"limited"},
+  {id:10,name:"Beetroot",emoji:"🫐",price:5,unit:"each",cat:"veg",tag:"today"},
+  {id:11,name:"Cucumber",emoji:"🥒",price:7,unit:"each",cat:"veg",tag:"fresh"},
+  {id:12,name:"Lemon",emoji:"🍋",price:3,unit:"each",cat:"fruit",tag:"fresh"},
+];
+const tagLabels = {fresh:"✓ Fresh today",today:"Picked today",limited:"Limited stock"};
+let cart={}, curFilter="all", hawkerOnline=true;
+let hawkerOrders=[
+  {id:"#W041",status:"new",loc:"Library Lawns",items:"2x Banana, 1x Spinach",total:14,eta:5,elapsed:2},
+  {id:"#W039",status:"otw",loc:"Matrix Cafe",items:"3x Apple, 2x Tomato",total:18,eta:7,elapsed:4},
+  {id:"#W037",status:"done",loc:"Senate House Steps",items:"1x Mango, 1x Avocado",total:15,eta:8,elapsed:8},
+  {id:"#W035",status:"done",loc:"Origins Cafe",items:"2x Carrot, 1x Spinach",total:14,eta:6,elapsed:6},
+];
+
+function getTotal(){return Object.values(cart).reduce((s,i)=>s+i.price*i.qty,0);}
+function getCount(){return Object.values(cart).reduce((s,i)=>s+i.qty,0);}
+
+function filterCat(c,el){
+  curFilter=c;
+  document.querySelectorAll(".fchip").forEach(x=>x.classList.remove("active"));
+  el.classList.add("active");
+  renderProducts();
+}
+
+function renderProducts(){
+  const list = curFilter==="all"?products:products.filter(p=>p.cat===curFilter);
+  document.getElementById("pgrid").innerHTML=list.map(p=>{
+    const ic=cart[p.id];
+    return `<div class="pcard ${ic?"incart":""}">
+      <span class="pemoji">${p.emoji}</span>
+      <div class="pname">${p.name}</div>
+      <div><span class="pprice">R${p.price}</span> <span class="punit">/ ${p.unit}</span></div>
+      <span class="fresh-tag ${p.tag}">${tagLabels[p.tag]}</span>
+      ${ic
+        ?`<div class="qctrl"><button class="qbtn" onclick="chgQty(${p.id},-1)" aria-label="Remove">−</button><span class="qnum">${ic.qty}</span><button class="qbtn" onclick="chgQty(${p.id},1)" aria-label="Add">+</button></div>`
+        :`<button class="padd" onclick="addCart(${p.id})"><i class="ti ti-plus" aria-hidden="true"></i> Add</button>`
+      }
+    </div>`;
+  }).join("");
+}
+
+function addCart(id){const p=products.find(x=>x.id===id);cart[id]={...p,qty:1};updateUI();}
+function chgQty(id,d){if(!cart[id])return;cart[id].qty+=d;if(cart[id].qty<=0)delete cart[id];updateUI();}
+
+function updateUI(){
+  const n=getCount();
+  document.getElementById("cart-nav-txt").textContent=n+(n===1?" item":" items");
+  const b=document.getElementById("cbadge");b.textContent=n;b.style.display=n>0?"flex":"none";
+  renderProducts();
+  renderCart();
+}
+
+function updateEta(){
+  const sel=document.getElementById("dloc");
+  const mins=sel?parseInt(sel.options[sel.selectedIndex].value):8;
+  const el=document.getElementById("cart-eta-mins");
+  if(el)el.textContent="~"+mins+" min";
+  const heroEl=document.getElementById("hero-eta");
+  if(heroEl)heroEl.textContent=mins;
+}
+
+function renderCart(){
+  const keys=Object.keys(cart);
+  const el=document.getElementById("cart-items");
+  if(keys.length===0){
+    el.innerHTML=`<div class="cart-empty"><i class="ti ti-basket" aria-hidden="true"></i><p>Your basket is empty</p></div>`;
+    document.getElementById("cart-checkout").style.display="none";
+    return;
+  }
+  el.innerHTML=keys.map(id=>{
+    const i=cart[id];
+    return `<div class="citem">
+      <span class="citem-emoji">${i.emoji}</span>
+      <div class="citem-info">
+        <div class="citem-name">${i.name}</div>
+        <div class="citem-sub">R${i.price} × ${i.qty} · <span class="fresh-tag ${i.tag}" style="display:inline-flex;vertical-align:middle">${tagLabels[i.tag]}</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="citem-total">R${i.price*i.qty}</span>
+        <button onclick="chgQty(${id},-1)" style="background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:16px;" aria-label="Remove">×</button>
+      </div>
+    </div>`;
+  }).join("");
+  const t=getTotal();
+  document.getElementById("order-summary").innerHTML=`
+    <div class="srow"><span>Subtotal (${getCount()} items)</span><span>R${t.toFixed(2)}</span></div>
+    <div class="srow"><span>Delivery</span><span style="color:var(--g600)">Free</span></div>
+    <div class="srow total"><span>Total</span><span>R${t.toFixed(2)}</span></div>`;
+  document.getElementById("cart-checkout").style.display="block";
+  updateEta();
+}
+
+function placeOrder(){
+  const sel=document.getElementById("dloc");
+  const locName=sel.options[sel.selectedIndex].text;
+  const mins=parseInt(sel.options[sel.selectedIndex].value);
+  document.getElementById("s-loc").textContent=locName;
+  document.getElementById("s-eta-txt").textContent="~"+(mins-2)+" min";
+  document.getElementById("s-total-eta").textContent="~"+mins+" min";
+  hawkerOrders.unshift({id:"#W0"+(42+hawkerOrders.length),status:"new",loc:locName,items:"New order",total:getTotal()||10,eta:mins,elapsed:0});
+  updateHawkerStats();
+  cart={};updateUI();
+  switchView("success");
+}
+
+function switchView(v){
+  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+  document.getElementById("view-"+v).classList.add("active");
+  document.querySelectorAll(".ntab").forEach(t=>t.classList.remove("active"));
+  if(v==="shop")document.querySelectorAll(".ntab")[0].classList.add("active");
+  if(v==="hawker"){document.querySelectorAll(".ntab")[1].classList.add("active");renderHawker();}
+  if(v==="cart")renderCart();
+}
+
+function updateHawkerStats(){
+  document.getElementById("hs-new").textContent=hawkerOrders.filter(o=>o.status==="new").length;
+  document.getElementById("hs-otw").textContent=hawkerOrders.filter(o=>o.status==="otw").length;
+  document.getElementById("hs-done").textContent=hawkerOrders.filter(o=>o.status==="done").length;
+}
+
+function renderHawker(){
+  updateHawkerStats();
+  const statusMap={new:"New order",otw:"On the way",done:"Delivered"};
+  document.getElementById("horders").innerHTML=hawkerOrders.map((o,i)=>{
+    const remaining=Math.max(0,o.eta-o.elapsed);
+    const pct=Math.min(100,Math.round((o.elapsed/o.eta)*100));
+    return `<div class="ocard">
+      <div class="ocard-top">
+        <span class="oid">${o.id}</span>
+        <span class="obadge b-${o.status}">${statusMap[o.status]}</span>
+      </div>
+      <div class="oloc"><i class="ti ti-map-pin" style="font-size:13px;color:var(--t600)" aria-hidden="true"></i>${o.loc}</div>
+      <div class="oitems">${o.items}</div>
+      <div class="oeta-row">
+        <span class="oeta-pill ${o.status==="done"?"done":"ticking"}">
+          <i class="ti ti-clock" aria-hidden="true" style="font-size:13px"></i>
+          ${o.status==="done"?"Delivered in "+o.eta+" min":remaining+" min remaining"}
+        </span>
+        ${o.status!=="done"?`<span style="font-size:11px;color:var(--color-text-secondary)">${pct}% of route</span>`:""}
+      </div>
+      <div class="obottom">
+        <span class="oamt">R${o.total}.00</span>
+        ${o.status==="new"?`<button class="obtn obtn-accept" onclick="advOrder(${i})">Accept & pack</button>`:
+          o.status==="otw"?`<button class="obtn obtn-deliver" onclick="advOrder(${i})">Mark delivered</button>`:
+          `<span style="font-size:12px;color:var(--g600)"><i class="ti ti-check"></i> Done</span>`}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function advOrder(i){
+  if(hawkerOrders[i].status==="new"){hawkerOrders[i].status="otw";hawkerOrders[i].elapsed=Math.floor(hawkerOrders[i].eta*0.4);}
+  else if(hawkerOrders[i].status==="otw"){hawkerOrders[i].status="done";hawkerOrders[i].elapsed=hawkerOrders[i].eta;}
+  renderHawker();
+}
+
+function toggleOnline(){
+  hawkerOnline=!hawkerOnline;
+  document.getElementById("sdot").className="sdot"+(hawkerOnline?"":" off");
+  document.getElementById("slabel").textContent=hawkerOnline?"Online — accepting orders":"Offline — not accepting orders";
+}
+
+renderProducts();
+</script>
